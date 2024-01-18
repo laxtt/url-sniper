@@ -10,14 +10,14 @@ const configPath = "./config.json";
 const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
 
 const guilds = {};
-const socket = new ws_1.default("wss://gateway-us-east1-b.discord.gg/?v=7&encoding=json");
+const socket = new ws_1.default("wss://gateway.discord.gg/?v=10&encoding=json");
 socket.onmessage = async (message) => {
     const data = JSON.parse(message.data.toString());
     if (data.t === "GUILD_UPDATE") {
         const guild = guilds[data.d.guild_id];
         if ((guild || data.d.vanity_url_code) !== data.d.vanity_url_code) {
             const start = Date.now();
-            await (0, node_fetch_1.default)(`https://canary.discord.com/api/v7/guilds/${config.sniperGuild}/vanity-url`, {
+            await (0, node_fetch_1.default)(`https://discord.com/api/v9/guilds/${config.sniperGuild}/vanity-url`, {
                 method: "PATCH",
                 headers: {
                     Authorization: config.sniperToken,
